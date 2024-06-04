@@ -1,0 +1,25 @@
+As it's date of creation, the used protobuf version is the 3.6.1
+To install it
+
+# remove the previous version
+sudo apt-get remove --purge protobuf-compiler libprotobuf-dev
+
+### get and compile 
+# get
+wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
+tar -xzf protobuf-cpp-3.6.1.tar.gz
+cd protobuf-3.6.1
+
+# compile
+./configure
+make
+sudo make install
+sudo ldconfig
+protoc --version
+
+# add path to it
+export PROTOBUF_36_PATH="/mnt/c/Users/maxim/Bureau/workspace/goldo_broker_cpp/build/protobuf-3.6.1/src/google/protobuf/"
+export PATH=$PATH:$PROTOBUF_36_PATH
+
+# dependance
+sudo apt-get install libzmq3-dev

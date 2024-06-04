@@ -1,0 +1,15 @@
+[submodule "goldo_broker_cpp"]
+	path = goldo_broker_cpp
+	url = https://github.com/goldobot/goldo_broker_cpp
+[submodule "goldo_GR_SW4STM32"]
+	path = goldo_GR_SW4STM32
+	url = https://github.com/goldobot/Carte_GR_SW4STM32.git
+[submodule "goldo_strat"]
+	path = goldo_strat
+	url = https://github.com/goldobot/goldo_strat
+[submodule "goldobot_ihm"]
+	path = goldobot_ihm
+	url = https://github.com/goldobot/goldobot_ihm.git
+[submodule "ELEC"]
+	path = ELEC
+	url = git@github.com:goldobot/ELEC.git
