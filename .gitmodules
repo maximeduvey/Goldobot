@@ -13,3 +13,6 @@
 [submodule "ELEC"]
 	path = ELEC
 	url = git@github.com:goldobot/ELEC.git
+[submodule "Palmi_robot"]
+	path = Palmi_robot
+	url = git@github.com:maximeduvey/Palmi_robot.git

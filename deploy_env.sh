@@ -102,7 +102,7 @@ sync_projects () {
 
 # will install apt-get and pip / python dependency 
 install_apt_and_pip_dependency() {
-    Logger $YELLOW "sync_projects"
+    Logger $YELLOW "install_apt_and_pip_dependency"
     run_command_and_exist_if_fail sudo apt-get install -y "${apt_packages[@]}"
     run_command_and_exist_if_fail "${command_python_pip_install[@]}" "${python_packages[@]}"
     Logger $GREEN "Success"
