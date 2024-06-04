@@ -13,6 +13,12 @@
 [submodule "ELEC"]
 	path = ELEC
 	url = git@github.com:goldobot/ELEC.git
-[submodule "Palmi_robot"]
-	path = Palmi_robot
-	url = git@github.com:maximeduvey/Palmi_robot.git
+[submodule "PAMI_robot"]
+	path = PAMI_robot
+	url = git@github.com:maximeduvey/PAMI_robot.git
+[submodule "goldo_rplidar"]
+	path = goldo_rplidar
+	url = git@github.com:goldobot/goldo_rplidar.git
+[submodule "goldo_gui"]
+	path = goldo_gui
+	url = git@github.com:goldobot/goldo_gui.git
