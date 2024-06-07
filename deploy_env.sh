@@ -30,11 +30,14 @@ CURRENT_FOLDER=$PWD
 Logger $BLUE "deploying at $CURRENT_FOLDER"
 BUILD_FOLDER_NAME="build"
 
+# these Libraries are blacklisted, they will prevent project compilation if present
+local blacklisted_packages=("libprotobuf-dev")
+
 # list of apt dependcy for the project
-apt_packages=(protobuf-compiler libprotobuf-dev protobuf-java libzmq3-dev )
+apt_packages=(protobuf-compiler libprotobuf-dev libzmq3-dev )
 
 # list of python module necessary for the project, should be updated by the next person
-python_packages=("numpy")
+python_packages=(numpy opencv-python-headless)
 
 command_python_pip_install=(python3 -m pip install)
 
@@ -108,6 +111,29 @@ install_apt_and_pip_dependency() {
     Logger $GREEN "Success"
 }
 
+#!/bin/bash
+
+# Function to check if libraries are installed and ask for confirmation to uninstall if they are
+check_and_blacklisted_packages_and_uninstall() {
+    # List of libraries to check
+    
+    # Iterate over each library and check if it is installed
+    for library in "${blacklisted_packages[@]}"; do
+        if dpkg -l | grep -q "$library"; then
+            Logger $RED "$library is installed."
+            # Call ask_confirmation function (assumes this function is defined elsewhere)
+            if ask_confirmation "Blacklisted package $library is detected, do you want to uninstall it?" "n"; then
+                run_command_and_exist_if_fail sudo apt-get remove --purge -y "$library"
+                Logger $WHITE "$library has been uninstalled."
+            else
+                Logger $GREEN "$library was not uninstalled."
+            fi
+        else
+             Logger $BLUE "$library is not installed."
+        fi
+    done
+}
+
 # Install the specific protobuf version and make it 
 install_protobuf_dependency() {
     Logger $WHITE "install_protobuf_dependency"
@@ -131,13 +157,9 @@ install_protobuf_dependency() {
     protobuf_version=$(protoc --version)
     Logger $GREEN "Success! protobuf version is $protobuf_version"
     run_command_and_exist_if_fail cd $CURRENT_FOLDER
-}
-
-
-# instal all external dependency one after the other (like protobuf)
-install_external_dependencies() {
-    Logger $WHITE "---- install_external_dependencies ----"
-    install_protobuf_dependency 
+    # set path to protobuf include files
+    export PROTOBUF_INCLUDE_PATH="$CURRENT_FOLDER/$PROTOBUF_FOLDER/src/google/protobuf/"
+    export PATH=$PATH:$PROTOBUF_INCLUDE_PATH
 }
 
 compile_goldo_GR_SW4STM32() {
@@ -201,10 +223,12 @@ parse_all_module_for_compilation() {
 
 # it's a main
 main () {
+    sync_projects
     if ! ask_confirmation "Do you want to skip APT and PIP instalation ?" "y"; then
         install_apt_and_pip_dependency
     fi
     install_protobuf_dependency
+    check_and_blacklisted_packages_and_uninstall
     parse_all_module_for_compilation
 
     Logger $GREEN "#########################################"
